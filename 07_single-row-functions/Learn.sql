@@ -145,3 +145,82 @@ SELECT LOCATE('ll', 'hello') FROM DUAL;
 # ELT(m,s1,s2,…,sn)		返回指定位置的字符串，如果m=1，则返回s1，如果m=2，则返回s2，如果m=n，则返回sn
 # 用法可以为: m和s均为函数, 通过控制m的传值, 达到选择执行不同s的效果
 SELECT ELT(2, 'a', 'b', 'c', 'd') FROM DUAL;
+
+# NULLIF(value1,value2)比较两个字符串，如果value1与value2相等，则返回NULL，否则返回value1
+SELECT NULLIF('zhangsan', 'lisi') FROM DUAL;
+
+
+
+# ======================== 07章节讲解: 日期和时间函数-获取日期,时间 ========================
+
+# 日期转为数值的隐式转换
+SELECT
+    CURDATE(), 			# 2025-06-05
+	CURDATE() + 0,	# 20250605
+	NOW(),					# 2025-06-05 01:09:34
+	NOW() + 0				# 20250605010934
+FROM DUAL;
+
+
+# ======================== 07章节讲解: 日期和时间函数-日期与时间戳的转换 ========================
+# 略
+
+
+# ======================== 07章节讲解: 日期和时间函数-获取月份,星期,星期数,天数等函数 ========================
+
+# WEEKDAY(date)		返回周几，注意，周1是0，周2是1，。。。周日是6
+# 2025-06-05, 周四, 返回3
+SELECT WEEKDAY('2025-06-05') FROM DUAL;
+
+# DAYOFWEEK(date)		返回周几，注意：周日是1，周一是2，。。。周六是7
+# 2025-06-05, 周四, 返回5
+SELECT DAYOFWEEK('2025-06-05') FROM DUAL;
+
+
+# ======================== 07章节讲解: 日期和时间函数-日期的操作函数 ========================
+
+# EXTRACT(type FROM date)		返回指定日期中特定的部分，type指定返回的值
+SELECT EXTRACT(DAY FROM NOW()) FROM DUAL;
+
+
+# ======================== 07章节讲解: 日期和时间函数-时间和秒钟转换的函数 ========================
+
+# TIME_TO_SEC(time)		将 time 转化为秒并返回结果值。转化的公式为: 小时*3600+分钟*60+秒
+# SEC_TO_TIME(seconds)	将 seconds 描述转化为包含小时、分钟和秒的时间
+SELECT
+    TIME_TO_SEC('2025-06-05 00:30:10'),
+    TIME_TO_SEC('00:30:10'),
+    SEC_TO_TIME(100000)		# 27:46:40
+FROM DUAL;
+
+
+# ======================== 07章节讲解: 日期和时间函数-计算日期和时间的函数 ========================
+# DATE_ADD(datetime, INTERVAL expr type), ADDDATE(date,INTERVAL expr type)		增加, date为给定时间参数, expr为表达式, type为时间间隔类型
+# DATE_SUB(date,INTERVAL expr type), SUBDATE(date,INTERVAL expr type)					减少, date为给定时间参数, expr为表达式, type为时间间隔类型
+SELECT
+    DATE_ADD('2025-06-05 00:30:10', INTERVAL 1 DAY),		# 增加一天
+    DATE_ADD('2025-06-05 00:30:10', INTERVAL '1_1' YEAR_MONTH)	# 增加一年和一个月; 这里表达式为'1_1', 中间拼接下划线
+FROM DUAL;
+
+# ADDTIME(time1,time2)	返回time1加上time2的时间。当time2为一个数字时，代表的是秒，可以为负数
+# SUBTIME(time1,time2)	返回time1减去time2后的时间。当time2为一个数字时，代表的是秒，可以为负数
+# MAKEDATE(year,n)			针对给定年份与所在年份中的天数返回一个日期
+SELECT
+    ADDTIME(NOW(),20),			# 当为数字时，代表秒
+	SUBTIME(NOW(),'1:1:3'),	# 代表时分秒
+    SUBTIME(NOW(),'1:3'),		# 代表时分
+
+    MAKEDATE('2024-02-01', 60),		# 2024年，的第六十天
+	MAKEDATE(YEAR(NOW()),50),			# YEAR()对NOW()函数取年数值，即本年，的第五十天
+
+	PERIOD_ADD(20200101010101, 10)	# 即2020-01-01 01:01:01，这是日期转为数值的形式
+FROM DUAL;
+
+
+
+# ======================== 07章节讲解: 日期和时间函数- 日期的格式化与解析 ========================
+
+
+# ======================== 07章节讲解: 流程控制函数 ========================
+
+#
