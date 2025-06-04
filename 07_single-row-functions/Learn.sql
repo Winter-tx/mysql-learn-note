@@ -113,3 +113,35 @@ FROM DUAL;
 
 # ======================== 07章节讲解: 字符串函数 ========================
 
+# INSERT(str, idx, len, replacestr)		将字符串str从第idx位置开始，len个字符长的子串替换为字符串replacestr
+# 字符串的索引都是从1开始
+SELECT INSERT('hello,world!',6,1,'---') FROM DUAL;
+
+# REPLACE(str, a, b)		用字符串b替换字符串str中所有出现的字符串a, (有a就替换, 没有就不替换, 不会报错)
+SELECT REPLACE('hello','ll','aa'), REPLACE('hello','ee','aa') FROM DUAL;
+
+# LPAD(str, len, pad)		用字符串pad对str最左边进行填充，直到str的长度为len个字符
+# 实现左对齐效果
+SELECT employee_id, last_name, LPAD(salary, 10, '*') FROM employees;	# 这里salary进行了隐式转换, 转为了字符串;
+SELECT employee_id, last_name, LPAD(salary, 10, ' ') FROM employees;
+
+# RPAD(str ,len, pad)		用字符串pad对str最右边进行填充，直到str的长度为len个字符
+# 实现右对齐效果
+
+# TRIM(s)		去掉字符串s首尾的空格, 中间的不会去除
+SELECT CONCAT('---', TRIM('    he  l  l  o    '), '---') FROM DUAL;
+
+# TRIM(s1 FROM s)		去掉字符串s首尾的s1
+SELECT TRIM('oo' FROM 'ooheoollo') FROM DUAL;
+
+# STRCMP(s1,s2)		比较字符串s1,s2的ASCII码值的大小; s1较大返回1, 相等返回0, s1较小返回-1
+SELECT STRCMP('abc', 'abd') FROM DUAL;
+
+# LOCATE(substr,str)		返回字符串substr在字符串str中首次出现的位置，作用与POSITION(substr IN str)、INSTR(str,substr)相同。
+# 未找到时返回0; 理解: 如果找到位置, 最小为1, 因为MySQL中字符串的索引从1开始, 如果没找到, 那返回1前面的数值, 即为0;
+# 类比: 在Java中如果indexOf()没找到返回-1, java中索引从0开始, 返回0前面的数值, 即为-1;
+SELECT LOCATE('ll', 'hello') FROM DUAL;
+
+# ELT(m,s1,s2,…,sn)		返回指定位置的字符串，如果m=1，则返回s1，如果m=2，则返回s2，如果m=n，则返回sn
+# 用法可以为: m和s均为函数, 通过控制m的传值, 达到选择执行不同s的效果
+SELECT ELT(2, 'a', 'b', 'c', 'd') FROM DUAL;
