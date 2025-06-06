@@ -331,6 +331,32 @@ FROM DUAL;
 # DECODE(value,password_seed)		解密,使用password_seed作为加密因子加密value
 # 这两个方法在MySQL8.0中已被弃用
 SELECT
-    ENCODE('mysql','seed')
-        DECODE(ENCODE('mysql','seed'),'seed')
+    ENCODE('mysql','seed'),
+    DECODE(ENCODE('mysql','seed'),'seed')
 FROM DUAL;
+
+
+
+# ======================== 07章节讲解: 07MySQL信息函数 ========================
+/*
+VERSION()					返回当前MySQL的版本号
+CONNECTION_ID()		返回的当前正在执行该查询的连接所对应的这个唯一ID; 执行SHOW PROCESSLIST命令时,Id列显示的值就是各个连接的CONNECTION_ID()
+
+DATABASE()，SCHEMA()	返回MySQL命令行当前所在的数据库
+
+USER()，CURRENT_USER()、SYSTEM_USER()，SESSION_USER()		返回当前连接MySQL的用户名，返回结果格式为“主机名@用户名”
+
+CHARSET(value)			返回字符串value自变量的字符集
+COLLATION(value)		返回字符串value的比较规则
+*/
+SELECT
+    VERSION(),
+    CONNECTION_ID(),
+    DATABASE(), SCHEMA(),
+    USER(), SESSION_USER(),
+    CHARSET('07MySQL信息函数'),
+    COLLATION('07MySQL信息函数')
+FROM DUAL;
+
+# 执行SHOW PROCESSLIST命令
+SHOW PROCESSLIST;
