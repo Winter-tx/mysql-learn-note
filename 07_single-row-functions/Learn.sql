@@ -252,6 +252,62 @@ FROM DUAL;
 
 
 
-# ======================== 07章节讲解: 流程控制函数 ========================
+# ======================== 07章节讲解: 05流程控制函数 ========================
 
-#
+# 01: IF(value,value1,value2)		如果value的值为TRUE，返回value1，否则返回value2
+# 计算员工的年薪
+SELECT
+    last_name, commission_pct, salary,
+    salary * 12 * (1 + IF(commission_pct IS NOT NULL, commission_pct, 0)) AS '年薪'
+FROM employees;
+
+# 假设employees表中, is_amdmin字段有0和1两个值, 现在将两个值对调
+UPDATE employees SET is_admin = IF(is_admin = 1, 0, 1);
+
+
+# 02: IFNULL(value1, value2)		如果value1不为NULL，返回value1，否则返回value2
+# 计算员工的年薪
+SELECT
+    last_name, commission_pct, salary,
+    salary * 12 * (1 + IFNULL(commission_pct, 0)) AS '年薪'
+FROM employees;
+
+
+/*
+03:
+CASE WHEN 条件1 THEN 结果1
+			WHEN 条件2 THEN 结果2
+			....
+			[ELSE resultn]
+			END												相当于Java的if...else if...else...(多选一; ELSE可以省略(一般使用[]符号的都可以省略) )
+*/
+SELECT
+    last_name, salary,
+    CASE
+        WHEN salary >= 15000 THEN 'A'
+        WHEN salary >= 10000 THEN 'B'
+        WHEN salary >= 5000 THEN 'C'
+        ELSE 'D'
+        END AS 'salaryGrade',
+        department_id
+FROM employees;
+
+/*
+04:
+CASE expr
+	WHEN 常量值1 THEN 值1
+	WHEN 常量值1 THEN 值1
+	....
+	[ELSE 值n]
+	END												相当于Java的switch...case...(多选一; ELSE可以省略(一般使用[]符号的都可以省略) )
+*/
+# 查询部门号为 10,20, 30 的员工信息, 若部门号为 10, 则打印其工资的 1.1 倍, 20 号部门, 则打印其工资的 1.2 倍, 30 号部门打印其工资的 1.3 倍数。
+SELECT
+    last_name, salary, department_id,
+    CASE department_id
+        WHEN 10 THEN salary * 1.1
+        WHEN 20 THEN salary * 1.2
+        WHEN 30 THEN salary * 1.3
+        END 'afterSalary'
+FROM employees
+WHERE department_id IN (10, 20, 30);
