@@ -360,3 +360,35 @@ FROM DUAL;
 
 # 执行SHOW PROCESSLIST命令
 SHOW PROCESSLIST;
+
+
+
+# ======================== 07章节讲解: 08其他函数 ========================
+/*
+FORMAT(value,n)				对数字value进行格式化; n表示四舍五入后保留到小数点后n位
+CONV(value,from,to)		将value的值进行不同进制之间的转换
+INET_ATON(ipvalue)		将以点分隔的IP地址转化为一个数字
+INET_NTOA(value)			将数字形式的IP地址转化为以点分隔的IP地址
+BENCHMARK(n,expr)			MySQL处理n次expr表达式所耗费的时间
+CONVERT(value USING char_code)		字符集的转换, 将value所使用的字符编码修改为char_code
+*/
+SELECT
+    FORMAT(123.456, 2),
+    FORMAT(123.456, -2),			# 如果n小于0, 保留到整数位
+
+                                      CONV(16,10,2),
+        CONV(NULL,10,2),		# NULL不能转换
+
+    INET_ATON('127.0.0.1'),		# 以“192.168.1.100”为例，计算方式为192乘以256的3次方，加上168乘以256的2次方，加上1乘以256，再加上100。
+	INET_NTOA(2130706433)
+FROM DUAL;
+
+# BENCHMARK()可用于测试表达式的执行效率
+SELECT BENCHMARK(10000, MD5('mysql')) FROM DUAL;
+
+# 字符集的转换
+SELECT
+    CHARSET('字符集转换'),
+    CONVERT('字符集转换' USING 'gbk'),
+    CHARSET(CONVERT('字符集转换' USING 'gbk'))
+FROM DUAL;
