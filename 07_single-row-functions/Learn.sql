@@ -311,3 +311,26 @@ SELECT
         END 'afterSalary'
 FROM employees
 WHERE department_id IN (10, 20, 30);
+
+
+
+# ======================== 07章节讲解: 06加密与解密函数 ========================
+# PASSWORD(str)		加密结果不可逆,加密后41位长的字符串
+# 在MySQL8.0中已被弃用
+SELECT PASSWORD('mysql'), PASSWORD(NULL) FROM DUAL;
+
+# MD5(str)				加密结果不可逆,若参数为NULL,则会返回NULL
+# SHA(str)				加密结果不可逆,当参数为NULL时,返回NULL;SHA加密算法比MD5更加安全
+SELECT
+    MD5('mysql'), MD5(NULL)
+    SHA('mysql'), SHA(NULL)
+FROM DUAL;
+
+
+# ENCODE(value,password_seed)		加密,使用password_seed作为加密因子加密value
+# DECODE(value,password_seed)		解密,使用password_seed作为加密因子加密value
+# 这两个方法在MySQL8.0中已被弃用
+SELECT
+    ENCODE('mysql','seed')
+        DECODE(ENCODE('mysql','seed'),'seed')
+FROM DUAL;
