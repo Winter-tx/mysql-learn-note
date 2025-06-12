@@ -5,7 +5,7 @@
 
 
 
-# ======================== 07章节讲解: 01常见聚合函数:AVG,SUM,MIN,MAX,COUNT ========================
+# ======================== 08章节讲解: 01常见聚合函数:AVG,SUM,MIN,MAX,COUNT ========================
 
 /*
 1. AVG(column), SUM(column), MIN(column), MAX(column), COUNT(column): 指定列时都会忽略NULL
@@ -74,7 +74,7 @@ FROM
 
 
 
-# ======================== 07章节讲解: 02GROUP BY ========================
+# ======================== 08章节讲解: 02GROUP BY ========================
 # 练习: 查询每个部门的平均工资
 SELECT 	department_id, AVG( salary )
 FROM employees
@@ -109,7 +109,8 @@ ORDER BY avg_salary;
 
 
 
-# ======================== 07章节讲解: 03HAVING ========================
+
+# ======================== 08章节讲解: 03HAVING ========================
 # 练习: 查询各个部门中, 最高工资比10000高的部门
 # 错误写法:
 SELECT
@@ -126,6 +127,19 @@ SELECT
 FROM employees
 GROUP BY department_id
 HAVING MAX(salary) > 10000;
+
+
+/*
+HAVING 必须依赖 GROUP BY（显式或隐式分组）
+1. 隐式分组: SELECT MAX(salary) FROM employees HAVING MAX(salary) > 10000;
+							SQL中没有使用 GROUP BY 仍然可以使用 HAVING, 是因为整个表被视为单一分组
+
+2. 显示分组: SELECT  department_id, MAX(salary) FROM employees GROUP BY department_id HAVING MAX(salary) > 10000;
+
+3. HAVING 只能引用分组字段或聚合函数: SELECT MAX(salary) FROM employees HAVING department_id = 10
+																			报错提示: Unknown column 'department_id' in 'having clause'
+
+*/
 
 # 使用建议: 一般开发中使用 HAVINIG 的前提是 SQL 中使用了 GROUP BY, 如果没有 GROUP BY 仍然可以使用 HAVING, 但没有必要
 # 比如: 删除 GROUP BY 之后, 是否使用 HAVING 查询都只有一条数据;
@@ -166,7 +180,7 @@ WHERE与HAVING对比
 
 
 
-# ======================== 07章节讲解: 04SELECT的执行过程 ========================
+# ======================== 08章节讲解: 04SELECT的执行过程 ========================
 
 # SELECT 语句的完整结构
                /*
